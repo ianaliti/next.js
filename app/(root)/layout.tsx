@@ -1,11 +1,10 @@
 import React from 'react'
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <div>
-        <h1 className='text-3xl'>NAVBAR</h1>
+    <main className='font-work-sans'>
         {children}
-    </div>
+    </main>
   )
 }
 
