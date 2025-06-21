@@ -3,9 +3,12 @@ import { EyeIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { Author, Startup } from "@/sanity/types";
+
+export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 
 const StartupCard = ({ post }: { post: StartupTypeCard }) => {
-  const { title, views, _createdAt, author: { _id: authorId, name },_id, image, description, category } = post;
+  const { title, views, _createdAt, author, _id, image, description, category } = post;
 
   return (
     <li className="startup-card">
@@ -20,8 +23,8 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
 
       <div className="startup-card_content">
         <div className="startup-card_text">
-          <Link href={`/user/${authorId}`}>
-            <p className="startup-card_author">{name}</p>
+          <Link href={`/user/${author?._id}`}>
+            <p className="startup-card_author">{author?.name}</p>
           </Link>
 
           <Link href={`/startup/${_id}`}>
@@ -29,11 +32,11 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
           </Link>
         </div>
 
-        <Link href={`/user/${authorId}`}>
+        <Link href={`/user/${author?._id}`}>
           <div className="startup-card_avatar-container">
             <Image
-              src={image}
-              alt={`${name}'s profile`}
+              src={author?.image || "/placeholder.png"}
+              alt={`${author?.name}'s profile`}
               width={48}
               height={48}
               className="startup-card_avatar"
