@@ -39,7 +39,7 @@ export default async function Home({ searchParams }: { searchParams: { query?: s
           <ul className="startup-cards-container">
 
             { posts?.length > 0 ? (
-                posts?.map((post: StartupCardType, index: number) => (
+                posts?.map((post: StartupCardType) => (
                   <StartupCard key={post?.author._id} post={post}/>
                 ))
             ) : (
