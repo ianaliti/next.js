@@ -9,7 +9,8 @@ export default async function Home({ searchParams }: { searchParams: { query?: s
       _createdAt: new Date(),
       title: "Startup Idea 1",
       description: "Description for startup idea 1",
-      image: "/images/startup1.jpg",
+      category: "Technology",
+      image: "https://placeholder.co/48x48",
       views: 150,
       author: {
         _id: 1,
@@ -35,7 +36,7 @@ export default async function Home({ searchParams }: { searchParams: { query?: s
       <section className="section_container">
         <p className="text-30-semibold"></p>
           {query ? `Search results for ${query}` : 'All Startups' }
-          <ul className="mt-7 card-grid">
+          <ul className="startup-cards-container">
 
             { posts?.length > 0 ? (
                 posts?.map((post: StartupCardType, index: number) => (
