@@ -21,6 +21,7 @@ const StartupForm = () => {
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
+      setErrors({});
       const formValues = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
@@ -28,6 +29,8 @@ const StartupForm = () => {
         link: formData.get("link") as string,
         pitch,
       };
+
+      console.log(formValues);
 
       await formSchema.parseAsync(formValues);
 
@@ -70,8 +73,7 @@ const StartupForm = () => {
         error: "An unexpected error occurred",
         status: "ERROR",
       };
-    } finally {
-    }
+    } 
   };
 
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
@@ -90,7 +92,6 @@ const StartupForm = () => {
           name="title"
           id="title"
           className="startup-form_input"
-          required
           placeholder="Startup Title"
         />
 
@@ -105,7 +106,6 @@ const StartupForm = () => {
           name="description"
           id="description"
           className="startup-form_textarea"
-          required
           placeholder="Startup Description"
         />
 
@@ -123,7 +123,6 @@ const StartupForm = () => {
           name="category"
           id="category"
           className="startup-form_input"
-          required
           placeholder="Startup Category (Tech, Business, etc.)"
         />
 
@@ -152,24 +151,22 @@ const StartupForm = () => {
         <label htmlFor="pitch" className="startup-form_label">
           Pitch
         </label>
-        {isLoading && (
-          <MDEditor
-            value={pitch}
-            onChange={(value) => setPitch(value as string)}
-            id="pitch"
-            preview="edit"
-            height={300}
-            style={{ borderRadius: 20, overflow: "hidden" }}
-            textareaProps={{
-              placeholder:
-                "Briefly describe your idea and what problem it solves.",
-            }}
-            previewOptions={{
-              disallowedElements: ["style"],
-            }}
-          />
-        )}
-        {errors.link && <p className="startup-form_error">{errors.link}</p>}
+        <MDEditor
+          value={pitch}
+          onChange={(value) => setPitch(value as string)}
+          id="pitch"
+          preview="edit"
+          height={300}
+          style={{ borderRadius: 20, overflow: "hidden" }}
+          textareaProps={{
+            placeholder:
+              "Briefly describe your idea and what problem it solves.",
+          }}
+          previewOptions={{
+            disallowedElements: ["style"],
+          }}
+        />
+        {errors.pitch && <p className="startup-form_error">{errors.pitch}</p>}
       </div>
 
       <Button

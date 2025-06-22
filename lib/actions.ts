@@ -36,10 +36,11 @@ export const createPitch = async (prevState: any, form: FormData, pitch: string)
       },
       author: {
         _type: "reference",
-        _ref: session?.id,
+        _ref: session!.id, // session?.id,
       },
     };
 
+    // Crear el startup en Sanity
     const result = await writeClient.create({ _type: "startup", ...startup });
 
     return parseServerActionResponse({
