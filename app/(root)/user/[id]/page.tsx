@@ -1,13 +1,14 @@
 import { auth } from "@/auth";
+import { StartupCardSkeleton } from "@/components/StartupCard";
 import UserStartups from "@/components/UserStartups"; 
 import { client } from "@/sanity/lib/client";
 import { AUTHOR_BY_ID_QUERY } from "@/sanity/lib/queries";
-
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ReactElement, Suspense } from "react";
 
-export const experimental_ppr = true;
+// export const experimental_ppr = true;
+export const revalidate = 60;
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }): Promise<ReactElement> => {
   const id = (await params).id;
@@ -30,10 +31,9 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }): Promise<Re
         <div className="flex-1 flex flex-col gap-5 lg:mt-5">
           <p className="text-30-bold">{session?.id === id ? "Your" : "All"} Startups</p>
           <ul className="card_grid-sm">
-
-           
-              <UserStartups id={id} />
-
+           <Suspense fallback={<StartupCardSkeleton />}>
+                <UserStartups id={id} />
+           </Suspense>
           </ul>
         </div>
       </section>

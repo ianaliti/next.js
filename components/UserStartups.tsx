@@ -3,6 +3,8 @@ import { ReactElement } from "react";
 import StartupCard, { type StartupTypeCard } from "./StartupCard";
 import { STARTUPS_BY_AUTHOR_QUERY } from "@/sanity/lib/queries";
 
+export const revalidate = 60;
+
 const UserStartups = async ({ id }: { id: string }): Promise<ReactElement> => {
   const startups = await client.fetch(STARTUPS_BY_AUTHOR_QUERY, { id });
 

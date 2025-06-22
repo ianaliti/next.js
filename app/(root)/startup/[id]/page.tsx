@@ -9,7 +9,8 @@ import markdownit from "markdown-it";
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
 
-export const experimental_ppr = true;
+// export const experimental_ppr = true;
+export const revalidate = 60;
 
 const md = markdownit();
 
