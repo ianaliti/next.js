@@ -1,22 +1,85 @@
-"use client"
+"use client";
 
-import React, { useState } from "react";
+import React, { useActionState, useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Send } from "lucide-react";
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor from "@uiw/react-md-editor";
+import { toast } from "sonner";
+import { formSchema } from "@/lib/validation";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 const StartupForm = () => {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [pitch, setPitch] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const [errors, setErrors] = useState<Record<string, string>>({})
-    const [pitch, setPitch] = useState<string>("");
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
-    const isPending = false;
+  const handleFormSubmit = async (prevState: any, formData: FormData) => {
+    try {
+      const formValues = {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        category: formData.get("category") as string,
+        link: formData.get("link") as string,
+        pitch,
+      };
+
+      await formSchema.parseAsync(formValues);
+
+      const result = await createPitch(prevState, formData, pitch);
+
+      if (result.status === "SUCCESS" && result.data) {
+        toast("Success", {
+          description: "Startup submitted successfully!",
+          className: "bg-green-500 text-white",
+        });
+        router.push(`/startup/${result.data._id}`);
+      } else if (result.status === "ERROR") {
+        toast("Error", {
+          description: result.error || "Something went wrong",
+          className: "bg-red-500 text-white",
+        });
+      }
+
+      return result;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const fieldErrors = error.flatten().fieldErrors;
+        setErrors(fieldErrors as unknown as Record<string, string>);
+
+        toast("Error", {
+          description: "Please check the form for errors.",
+          className: "bg-red-500 text-white",
+        });
+
+        return { ...prevState, error: "Validation Failed", status: "ERROR" };
+      }
+
+      toast("Error", {
+        description: "An unexpected error occurred",
+        className: "bg-red-500 text-white",
+      });
+
+      return {
+        ...prevState,
+        error: "An unexpected error occurred",
+        status: "ERROR",
+      };
+    } finally {
+    }
+  };
+
+  const [state, formAction, isPending] = useActionState(handleFormSubmit, {
+    error: "",
+    status: "INITIAL",
+  });
 
   return (
-    <form action={() => {}} className="startup-form">
+    <form action={formAction} className="startup-form">
       <div>
         <label htmlFor="title" className="startup-form_label">
           Title
@@ -104,7 +167,7 @@ const StartupForm = () => {
               disallowedElements: ["style"],
             }}
           />
-        )} 
+        )}
         {errors.link && <p className="startup-form_error">{errors.link}</p>}
       </div>
 
