@@ -1,34 +1,37 @@
-import { STARTUP_BY_ID_QUERY } from '@/sanity/lib/queries';
-import React from 'react'
-import { client } from '@/sanity/lib/client';
-import { notFound } from 'next/navigation';
-import { formatDate } from '@/lib/utils';
-import Image from 'next/image';
-import Link from 'next/link';
+import { STARTUP_BY_ID_QUERY } from "@/sanity/lib/queries";
+import React from "react";
+import { client } from "@/sanity/lib/client";
+import { notFound } from "next/navigation";
+import { formatDate } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import markdownit from "markdown-it";
 
 export const experimental_ppr = true;
+
+const md = markdownit();
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
   const post = await client.fetch(STARTUP_BY_ID_QUERY, { id });
 
-  if (!post) return notFound()
+  if (!post) return notFound();
+
+  const parsedContent = md.render(post?.pitch || "");
 
   return (
     <>
       <section className="startup-hero-container">
         <div className="startup-hero-content">
           <div className="startup-hero-badge">
-            <span className="startup-hero-date">{formatDate(post._createdAt)}</span>
+            <span className="startup-hero-date">
+              {formatDate(post._createdAt)}
+            </span>
           </div>
-          
-          <h1 className="startup-hero-title">
-            {post.title}
-          </h1>
-          
-          <p className="startup-hero-description">
-            {post.description}
-          </p>
+
+          <h1 className="startup-hero-title">{post.title}</h1>
+
+          <p className="startup-hero-description">{post.description}</p>
 
           <div className="startup-hero-decorations">
             <div className="decoration-circle decoration-1"></div>
@@ -52,7 +55,10 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
         <div className="startup-content-area">
           <div className="startup-meta-section">
-            <Link href={`/user/${post.author?._id}`} className="startup-author-link">
+            <Link
+              href={`/user/${post.author?._id}`}
+              className="startup-author-link"
+            >
               <div className="startup-author-avatar-wrapper">
                 <Image
                   src={post.author?.image}
@@ -65,7 +71,9 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
               </div>
               <div className="startup-author-info">
                 <h4 className="startup-author-name">{post.author?.name}</h4>
-                <p className="startup-author-username">@{post.author?.username}</p>
+                <p className="startup-author-username">
+                  @{post.author?.username}
+                </p>
               </div>
             </Link>
 
@@ -77,13 +85,18 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
           <div className="startup-pitch-section">
             <div className="startup-section-header">
               <h3 className="startup-section-title">Pitch Details</h3>
-              <div className="startup-section-line"></div>
-            </div>
-        
-            <div className="startup-pitch-content">
-              <p className="startup-pitch-placeholder">
-                Detailed pitch information will be displayed here...
-              </p>
+
+              <div className="startup-pitch-content">
+                {parsedContent ? (
+                  <article
+                    dangerouslySetInnerHTML={{ __html: parsedContent }}
+                    className="startup-pitch-placeholder"
+                  />
+                ) : (
+                  <p className="no-result">No details provided</p>
+                )}
+                <div className="startup-section-line"></div>
+              </div>
             </div>
           </div>
         </div>
