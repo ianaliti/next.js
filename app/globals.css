@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+:root {
+  --radius: 0.5rem;
+  --primary: #fb8043;
+  --primary-100: #fec7eb;
+  --secondary: #f97316;
+  --black: #000000;
+  --black-100: #374151;
+  --black-200: #1f2937;
+  --black-300: #6b7280;
+  --white: #ffffff;
+  --white-100: #f9fafb;
+  --red-500: #ef4444;
+  --zinc-400: #a1a1aa;
+}
+
 @layer utilities {
   .flex-between {
     display: flex;
@@ -776,5 +791,61 @@
       width: 100px;
       align-self: center;
     }
+  }
+  .pink_container {
+    width: 100%;
+    background-color: var(--primary);
+    min-height: 530px;
+    background-image: linear-gradient(
+      to right,
+      transparent 49.5%,
+      rgba(251, 232, 67, 0.2) 49.5%,
+      rgba(251, 232, 67, 0.6) 50.5%,
+      transparent 50.5%
+    );
+    background-size: 5% 100%;
+    background-position: center;
+    background-repeat: repeat-x;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 24px;
+  }
+
+  .view_skeleton {
+    background-color: var(--zinc-400);
+    height: 40px;
+    width: 96px;
+    border-radius: 8px;
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .startup-card_skeleton {
+    width: 100%;
+    height: 384px;
+    border-radius: 22px;
+    background-color: var(--zinc-400);
+  }
+  /* View */
+  .view-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .view-text {
+    font-weight: 500;
+    font-size: 16px;
+    background-color: var(--primary-100);
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-transform: capitalize;
   }
 }

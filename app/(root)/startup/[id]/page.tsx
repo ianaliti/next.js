@@ -1,11 +1,13 @@
 import { STARTUP_BY_ID_QUERY } from "@/sanity/lib/queries";
-import React from "react";
+import React, { Suspense } from "react";
 import { client } from "@/sanity/lib/client";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import markdownit from "markdown-it";
+import { Skeleton } from "@/components/ui/skeleton";
+import View from "@/components/View";
 
 export const experimental_ppr = true;
 
@@ -86,6 +88,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
             <div className="startup-section-header">
               <h3 className="startup-section-title">Pitch Details</h3>
 
+              <div className="startup-section-line"></div>
               <div className="startup-pitch-content">
                 {parsedContent ? (
                   <article
@@ -95,11 +98,13 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
                 ) : (
                   <p className="no-result">No details provided</p>
                 )}
-                <div className="startup-section-line"></div>
               </div>
             </div>
           </div>
         </div>
+        <Suspense fallback={<Skeleton />}>
+                <View id={id} />
+        </Suspense>
       </section>
     </>
   );
