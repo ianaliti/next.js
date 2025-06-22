@@ -5,10 +5,15 @@ import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Send } from "lucide-react";
+import MDEditor from '@uiw/react-md-editor';
 
 const StartupForm = () => {
 
     const [errors, setErrors] = useState<Record<string, string>>({})
+    const [pitch, setPitch] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const isPending = false;
 
   return (
     <form action={() => {}} className="startup-form">
@@ -83,13 +88,32 @@ const StartupForm = () => {
         <label htmlFor="pitch" className="startup-form_label">
           Pitch
         </label>
+        {isLoading && (
+          <MDEditor
+            value={pitch}
+            onChange={(value) => setPitch(value as string)}
+            id="pitch"
+            preview="edit"
+            height={300}
+            style={{ borderRadius: 20, overflow: "hidden" }}
+            textareaProps={{
+              placeholder:
+                "Briefly describe your idea and what problem it solves.",
+            }}
+            previewOptions={{
+              disallowedElements: ["style"],
+            }}
+          />
+        )} 
         {errors.link && <p className="startup-form_error">{errors.link}</p>}
       </div>
 
       <Button
+        disabled={isPending}
         type="submit"
         className="startup-form_btn text-white"
       >
+        {isPending ? "Submitting..." : "Submit Your Pitch"}
         <Send className="size-6 ml-2" />
       </Button>
     </form>
