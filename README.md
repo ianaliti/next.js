@@ -7,10 +7,15 @@ A full-stack platform built for discovering, showcasing, and pitching startups �
 ## ✨ Features
 
 ✅ Sign Up & Login: Authenticate through GitHub using NextAuth.
+
 ✅ Startup Pitch Submission: Submit your startup idea as a pitch, with detailed descriptions and visuals.
+
 ✅ Search & Filter Pitches: Explore pitches using various search filters (e.g., technology, industry).
+
 ✅ Pitch Pages: View detailed pages for each pitch, including progress updates and feedback.
+
 ✅ User Profiles: Each user has a profile to track their pitches and interactions.
+
 ✅ Views Counter: Track views and engagement for each startup pitch.
 
 ---
