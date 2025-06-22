@@ -867,7 +867,7 @@ a:hover {
   margin-top: 20px;
   position: fixed;
   bottom: 12px;
-  right: 12px;
+  left: 12px;
 }
 
 .view-text {
